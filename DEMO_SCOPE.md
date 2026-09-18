@@ -25,6 +25,8 @@ Plus one required document: **`EXPLAINER.md`** (see §7).
 
 ## 2. Build this
 
+> **Superseded in part (2026-09-18):** live anchoring is out of the demo per `DECISIONS.md` PBX-021. The anchor script and verifier anchor check are implemented but not run; the package ships `anchorProof.state: NOT_SUBMITTED`.
+
 ### Part A — proof CLI (`packages/receipt/` or `proof/`)
 
 - **Fixture receipt core** at `fixtures/receipt.s2.json` following `PRODUCT_ARCHITECTURE.md` §14.1, with `issuer.issuerId = "onbehalf-demo"`, `scope.environment = "test"`, and the S2 story: `stripe.refund`, `amountMinor: 75000`, `currency: "usd"`, `policy.decision: "REQUIRE_APPROVAL"`, `approval.decision: "APPROVED"`, `execution.observedState: "SUCCEEDED"`, `evidence.level: "PROVIDER_OBSERVED"`. Include the `limitations` array verbatim from §14.1. Include a 256-bit random `commitmentNonce` (PBX-011).
@@ -61,6 +63,8 @@ Stripe API integration, database of any kind, authentication, webhooks, idempote
 - Prototype screens are static; labeled on every page.
 
 ## 5. Chain setup and faucet fallbacks
+
+> **Superseded (2026-09-18):** no chain setup, faucet, or chain key for the demo per `DECISIONS.md` PBX-021. Kept for the residency build.
 
 BNB testnet public RPC endpoints are listed in BNB Chain's official docs; use one from there (do not hardcode a third-party RPC without noting it). tBNB: try the official BNB testnet faucet first; if it requires mainnet balance, try QuickNode's or Chainlink's multi-chain faucets with the wallet address. Anchoring is the LAST step of Part A so nothing else blocks on it. If anchoring is not possible by Saturday evening, the package must still verify as `VALID_UNANCHORED`, and the demo says "anchor pending" honestly.
 
