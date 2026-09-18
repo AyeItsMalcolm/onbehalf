@@ -1,0 +1,38 @@
+{
+  "name": "onbehalf-demo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Onbehalf demo: signed, anchored, independently verifiable action receipts. Agents act on behalf. We prove who.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "packageManager": "pnpm@12.4.2",
+  "scripts": {
+    "keygen": "node --env-file-if-exists=.env --import tsx proof/src/keygen.ts",
+    "sign": "node --env-file=.env --import tsx proof/src/sign.ts",
+    "verify": "node --env-file-if-exists=.env --import tsx proof/src/verifier/cli.ts",
+    "tamper": "node --import tsx proof/src/tamper.ts",
+    "deploy:anchor": "node --env-file=.env --import tsx proof/src/anchor/deploy.ts",
+    "anchor": "node --env-file=.env --import tsx proof/src/anchor/commit.ts",
+    "test": "pnpm test:proof && pnpm test:contracts",
+    "test:proof": "vitest run",
+    "test:contracts": "forge test --root contracts",
+    "typecheck": "tsc --noEmit",
+    "build:demo": "node --import tsx scripts/build-demo-data.ts",
+    "demo": "node scripts/serve.mjs demo 4173",
+    "capture": "node --import tsx scripts/capture.ts",
+    "scan:secrets": "node --env-file-if-exists=.env --import tsx scripts/scan-secrets.ts"
+  },
+  "dependencies": {
+    "canonicalize": "^5.0.0",
+    "viem": "^2.56.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.1",
+    "playwright": "^1.63.0",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.1"
+  }
+}

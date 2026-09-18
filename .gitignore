@@ -1,0 +1,19 @@
+# Secrets. Never commit real environment files.
+.env
+.env.*
+!.env.example
+
+# Dependencies and build output
+node_modules/
+contracts/out/
+contracts/cache/
+contracts/lib/
+contracts/broadcast/
+
+# Recordings and test artifacts
+demo/captures/
+test-results/
+*.log
+
+# OS
+.DS_Store
