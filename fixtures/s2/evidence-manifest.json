@@ -1,0 +1,12 @@
+{
+  "actionId": "act_s2_9k2m4p7q",
+  "events": [
+    { "seq": 1, "type": "request.received", "at": "2026-09-18T21:00:00Z" },
+    { "seq": 2, "type": "mandate.checked", "at": "2026-09-18T21:00:00Z", "mandateVersion": 3, "active": true },
+    { "seq": 3, "type": "policy.evaluated", "at": "2026-09-18T21:00:00Z", "decision": "REQUIRE_APPROVAL" },
+    { "seq": 4, "type": "approval.requested", "at": "2026-09-18T21:00:01Z", "expiresAt": "2026-09-18T21:15:01Z" },
+    { "seq": 5, "type": "approval.decided", "at": "2026-09-18T21:02:00Z", "decision": "APPROVED", "approverRef": "approver_j_tan" },
+    { "seq": 6, "type": "execution.attempted", "at": "2026-09-18T21:03:00Z", "operationRef": "op_s2_4h8j2n6r" },
+    { "seq": 7, "type": "provider.response_observed", "at": "2026-09-18T21:04:00Z", "observedState": "SUCCEEDED", "source": "direct_response" }
+  ]
+}

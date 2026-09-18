@@ -1,0 +1,11 @@
+{
+  "actionId": "act_s2_9k2m4p7q",
+  "actionVersion": 1,
+  "actionType": "stripe.refund",
+  "targetRef": "pi_3QxTk9LmN2vRc8dE0Fq1Wz8d",
+  "amountMinor": 75000,
+  "currency": "usd",
+  "reason": "Customer returned order 4821; item unopened.",
+  "requestedBy": { "agentRef": "refund-agent", "agentVersion": "v1" },
+  "requestedAt": "2026-09-18T21:00:00Z"
+}

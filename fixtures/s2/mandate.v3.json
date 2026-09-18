@@ -1,0 +1,15 @@
+{
+  "mandateRef": "mandate_refunds_usd",
+  "mandateVersion": 3,
+  "organizationRef": "org_demo_acme",
+  "agentRef": "refund-agent",
+  "provider": "stripe",
+  "providerEnvironment": "sandbox",
+  "allowedActionTypes": ["stripe.refund"],
+  "currency": "usd",
+  "autonomousLimitMinor": 50000,
+  "approvalLimitMinor": 100000,
+  "status": "active",
+  "validFrom": "2026-09-01T00:00:00Z",
+  "validUntil": "2026-12-31T23:59:59Z"
+}

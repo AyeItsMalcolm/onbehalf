@@ -17,3 +17,6 @@ test-results/
 
 # OS
 .DS_Store
+
+# Local tool settings
+.claude/settings.local.json

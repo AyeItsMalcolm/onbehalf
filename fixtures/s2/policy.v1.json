@@ -1,0 +1,15 @@
+{
+  "policyRef": "policy_refunds_demo",
+  "policyVersion": 1,
+  "organizationRef": "org_demo_acme",
+  "rules": [
+    { "order": 1, "if": "actionType != stripe.refund", "then": "DENY", "reasonCode": "ACTION_TYPE_NOT_ALLOWED" },
+    { "order": 2, "if": "mandate inactive, expired, revoked, or mismatched", "then": "DENY", "reasonCode": "MANDATE_INVALID" },
+    { "order": 3, "if": "currency != usd", "then": "DENY", "reasonCode": "CURRENCY_NOT_ALLOWED" },
+    { "order": 4, "if": "amountMinor <= 0 or amountMinor > refundable", "then": "DENY", "reasonCode": "AMOUNT_OUT_OF_RANGE" },
+    { "order": 5, "if": "amountMinor <= 50000", "then": "ALLOW", "reasonCode": "WITHIN_AUTONOMOUS_LIMIT" },
+    { "order": 6, "if": "amountMinor <= 100000", "then": "REQUIRE_APPROVAL", "reasonCode": "HUMAN_APPROVAL_REQUIRED" },
+    { "order": 7, "if": "amountMinor > 100000", "then": "DENY", "reasonCode": "ABOVE_APPROVAL_LIMIT" }
+  ],
+  "note": "Demo fixture values, not recommended customer policy."
+}

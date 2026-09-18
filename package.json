@@ -10,6 +10,7 @@
   "packageManager": "pnpm@12.4.2",
   "scripts": {
     "keygen": "node --env-file-if-exists=.env --import tsx proof/src/keygen.ts",
+    "fixture": "node --env-file=.env --import tsx proof/src/fixture.ts",
     "sign": "node --env-file=.env --import tsx proof/src/sign.ts",
     "verify": "node --env-file-if-exists=.env --import tsx proof/src/verifier/cli.ts",
     "tamper": "node --import tsx proof/src/tamper.ts",
