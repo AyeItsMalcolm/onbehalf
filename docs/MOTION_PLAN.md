@@ -1,0 +1,21 @@
+# Onbehalf — Motion Plan (one page)
+
+Every motion has one job: show cause and effect. Timing 150–250 ms for micro-interactions, 300–450 ms for state changes and page transitions. Entrances use `cubic-bezier(0.2, 0.8, 0.2, 1)`; exits use `ease-in`; nothing linear. Only `transform` and `opacity` animate, so recording stays at 60 fps. `prefers-reduced-motion` turns every step below into an instant state change. Nothing loops except two time-limited pulses that stop the moment their state resolves.
+
+**Load, every page.** Children enter once: 30 ms apart, 6 px upward, fade 0→1, 220 ms. Viewer learns: the page has an order, top to bottom.
+
+| # | Moment | Trigger | What animates | Timing | Viewer learns |
+| --- | --- | --- | --- | --- | --- |
+| 1 | **Approve** | Click "Approve exact action" | Button scales to 0.97 and back (120 ms). Chip dot cross-fades amber→green (200 ms); chip text slides up-out then up-in "Approved by J. Tan" (200 ms). Then the strip fills in order: Execution "Executing…" (muted dot, soft pulse) → "Provider confirmed" (green) → Evidence "Signing receipt…" → **"Receipt signed" (green)**. Rows are 500 ms apart. Hold 600 ms on green, then a secondary line "Anchor pending" (amber dot, caption size) fades in beneath it, so the last beat of approval reads as signed rather than waiting. At +2.9 s a primary "View receipt" appears (fade + 6 px rise). | ≈3.0 s total, each step 300 ms | Approval is a decision; execution and evidence are separate steps that happen after it, in order; the receipt is signed, and the anchor is honestly a later, separate state. |
+| 2 | **Live binding** | Edit the amount field | Binding digest recomputes with real SHA-256. Hex characters scramble left-to-right and settle into the new value over 350 ms (prefix `sha256:` stays still). Chip flips amber→red "Approval invalidated: action changed" with a 2 px horizontal shake, 3 cycles, 240 ms. "Approve exact action" disables. Restoring $750.00 reverses all three. | 350 ms scramble, 240 ms shake | The approval is bound to exact facts. Change one cent and the old approval no longer applies. |
+| 3 | **Tamper** | Toggle "Show tampered copy" | Verifier runs real Ed25519 in the browser. Checks re-evaluate top to bottom, 120 ms apart: Digest and Signature flip PASS→FAIL, turn red, and a 1 px red underline sweeps left-to-right under each (250 ms). Banner slides down 8 px + fade from "Verification valid" to "Verification invalid — Digest, Signature" (350 ms). The document's amount reads $950.00 with a red left rule. Toggling back reverses in the same order. | ≈0.9 s total | Anyone can run the check. Change one number and the verifier names what broke. This ends the video. |
+| 4 | **Page transitions** | Navigate queue→detail→receipt | Cross-document View Transitions: the queue card expands into the detail title block (shared `view-transition-name`, 350 ms); everything else crossfades (250 ms). Browsers without support get a 200 ms load fade. | 250–350 ms | Three pages, one product. |
+| 5 | **Anchor** (revised per PBX-021) | Page load of receipt | "Receipt signed; anchor pending" chip in amber with a soft two-beat pulse that stops after 1.2 s; "Anchor details" panel reveals with the load stagger. No count-up, no block number, no BscScan link, because no transaction exists. | 1.2 s, once | The anchor is a configuration step. The demo does not fake it. |
+
+**Pulse definition.** Opacity 1→0.55→1 over 1.2 s, ease-in-out, at most two cycles, removed when the state resolves. Used only for "Executing…" and the anchor-pending chip.
+
+**Scramble definition.** For each of the 64 hex characters, index *i*: from *t* = *i* × 4 ms to *t* + 120 ms show random hex glyphs at 30 ms intervals, then lock to the target character. Total ≈ 350 ms. Mono font so width never shifts.
+
+**What is real in these moments.** Moment 2's digest and moment 3's five checks are computed in the browser with SubtleCrypto SHA-256 and WebCrypto Ed25519 over the real signed package. Moment 1's execution and evidence steps are a scripted story (no Stripe call), labeled by the page footer.
+
+**Polish pass.** After all three pages: every transition scrubbed at 0.25× with Playwright frames; anything that pops, jumps, or shifts layout is fixed before the recording.
