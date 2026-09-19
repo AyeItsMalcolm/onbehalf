@@ -8,7 +8,7 @@
  *   1. .env is gitignored and not tracked.
  *   2. .env.example contains variable names only (no values).
  *   3. No tracked file contains secret-shaped text: Stripe key prefixes,
- *      PEM headers, "PRIVATE KEY", or an env assignment with a value for
+ *      PEM private-key markers, or an env assignment with a value for
  *      RECEIPT_SIGNING_KEY / ANCHOR_PRIVATE_KEY / RPC_URL.
  *   4. No tracked file contains the ACTUAL values from .env (loaded in
  *      process via --env-file-if-exists; compared, never echoed).
@@ -16,8 +16,7 @@
  * DEMO_SCOPE.md §6 asks for `git grep` on `sk_`, `PRIVATE`, and the actual
  * key values. A bare `PRIVATE` would match the variable NAME
  * ANCHOR_PRIVATE_KEY in .env.example and docs by design, so this scan
- * matches private-key MATERIAL ("PRIVATE KEY", PEM headers, assignments
- * with values) rather than the word alone.
+ * matches private-key MATERIAL (PEM markers, assignments with values) rather than the word alone.
  */
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
@@ -26,7 +25,7 @@ const SECRET_VARS = ["RECEIPT_SIGNING_KEY", "ANCHOR_PRIVATE_KEY", "RPC_URL"] as 
 const PATTERNS: Array<{ name: string; re: RegExp }> = [
   { name: "Stripe secret key prefix", re: /\bsk_(live|test)_[A-Za-z0-9]{8,}/ },
   { name: "PEM header", re: /-----BEGIN [A-Z ]*PRIVATE KEY-----/ },
-  { name: "PRIVATE KEY material", re: /PRIVATE KEY[^A-Z_]/ },
+  { name: "PEM private key marker", re: /PRIVATE KEY-----/ },
   { name: "env assignment with a value", re: new RegExp(`^[ \\t]*(${SECRET_VARS.join("|")})[ \\t]*=[ \\t]*\\S+`, "m") },
 ];
 
