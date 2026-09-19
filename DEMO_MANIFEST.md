@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Purpose | YZi EASY Residency S5 application demo. Not the product. |
-| Source revision | `851291d190c6` (this manifest is committed on top of it) |
+| Source revision | `ad1423f86e10` (this manifest is committed on top of it) |
 | Written | 2026-09-19T22:18Z |
 | Company name in UI and copy | Onbehalf. Repository folder keeps the Project Blackbox codename. |
 | Decisions in force | `DECISIONS.md` PBX-021 |
@@ -28,7 +28,7 @@
 ## Secrets
 
 - `.env` holds only `RECEIPT_SIGNING_KEY` (Ed25519, PKCS8 base64). It is gitignored and untracked. `.env.example` documents four names with no values.
-- `pnpm scan:secrets` at this revision: CLEAN (`.env` ignored and untracked; `.env.example` names only; no Stripe key prefixes, PEM headers, "PRIVATE KEY" material, env assignments with values, or live `.env` values in any tracked file).
+- `pnpm scan:secrets` at this revision: CLEAN (`.env` ignored and untracked; `.env.example` names only; no Stripe key prefixes, PEM private-key markers, env assignments with values, or live `.env` values in any tracked file).
 - The receipt's `commitmentNonce` is inside the private package by design (PBX-011) and is not listed here.
 
 ## The video
