@@ -715,7 +715,7 @@ If an implementation choice conflicts with this security baseline, stop the affe
 - `MASTER_CONTEXT.md`, version 1.0.
 - `BUILD_PHILOSOPHY.md`, version 1.0.
 - `PRODUCT_ARCHITECTURE.md`, version 1.0.
-- “AI Web3 Business Ideas,” conversation ID `6aa51c97-32b0-83ea-b3ec-b50e274a626d`.
+- “AI Web3 Business Ideas” conversation (ID withheld).
 
 ### Primary security and platform sources checked 2026-09-15
 

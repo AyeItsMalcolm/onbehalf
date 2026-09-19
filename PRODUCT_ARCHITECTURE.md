@@ -1108,7 +1108,7 @@ No production financial action should rely on V0 key storage, authentication, or
 
 - `MASTER_CONTEXT.md`, version 1.0.
 - `BUILD_PHILOSOPHY.md`, version 1.0.
-- “AI Web3 Business Ideas,” conversation ID `6aa51c97-32b0-83ea-b3ec-b50e274a626d`.
+- “AI Web3 Business Ideas” conversation (ID withheld).
 
 ### Primary technical sources checked 2026-09-15
 

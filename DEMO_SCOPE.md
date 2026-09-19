@@ -81,7 +81,7 @@ BNB testnet public RPC endpoints are listed in BNB Chain's official docs; use on
 
 ## 7. `EXPLAINER.md` — required, written for Malcolm
 
-Malcolm has ADHD and learns by doing and by plain examples. He will narrate this demo on camera and answer questions from investors. Write `EXPLAINER.md` so he can rehearse from it:
+Malcolm learns by doing and by plain examples. He will narrate this demo on camera and answer questions from investors. Write `EXPLAINER.md` so he can rehearse from it:
 
 - Short sections, one idea each, bold key line first.
 - For each piece (receipt core, canonicalization, digest, signature, nonce, anchor contract, verifier, tamper check, the prototype screens) answer the five questions from `BUILD_PHILOSOPHY.md` §16: what is it in plain English, why it matters here, what happens in the concrete $750 scenario, how it works technically (two sentences max), and how to say it to an investor in one sentence.
