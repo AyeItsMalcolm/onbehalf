@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Purpose | YZi EASY Residency S5 application demo. Not the product. |
-| Source revision | `ad1423f86e10` (this manifest is committed on top of it) |
+| Source revision | `f9e6ed33db7f` (this manifest is committed on top of it) |
 | Written | 2026-09-19T22:18Z |
 | Company name in UI and copy | Onbehalf. Repository folder keeps the Project Blackbox codename. |
 | Decisions in force | `DECISIONS.md` PBX-021 |
