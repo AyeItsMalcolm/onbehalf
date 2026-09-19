@@ -61,7 +61,9 @@ try {
 }
 
 // 3 + 4. scan tracked text files
-const textFiles = tracked.filter((f) => !/\.(png|webm|mp4|woff2?|jpg|jpeg|gif|ico|pdf)$/i.test(f));
+// Binary files are skipped, and so is this scanner: its regex literals contain the marker text it hunts for.
+const SELF = "scripts/scan-secrets.ts";
+const textFiles = tracked.filter((f) => f !== SELF && !/\.(png|webm|mp4|woff2?|jpg|jpeg|gif|ico|pdf)$/i.test(f));
 const secretValues = SECRET_VARS.map((v) => process.env[v]).filter((v): v is string => !!v && v.trim().length > 0);
 let scanned = 0;
 for (const file of textFiles) {
