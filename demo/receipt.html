@@ -42,6 +42,13 @@
       color: var(--muted);
       font-size: 13px;
     }
+    /* Space for the tamper note is always reserved, so the digest line never moves. */
+    .doc-changed {
+      min-height: 36px;
+      margin: -6px 0 6px;
+      opacity: 0;
+      line-height: 1.5;
+    }
   </style>
 </head>
 <body>
@@ -115,7 +122,7 @@
             <span class="label">Amount</span>
             <span class="amount" id="doc-amount"></span>
           </div>
-          <p class="caption" id="doc-changed" hidden></p>
+          <p class="caption doc-changed" id="doc-changed" aria-live="polite"></p>
           <div class="hash-line"><span class="label">Digest</span><span class="mono" id="f-digest"></span></div>
           <div class="hash-line"><span class="label">Signature</span><span class="mono" id="f-sig"></span></div>
           <div class="hash-line"><span class="label">Issuer key</span><span class="mono" id="f-key"></span></div>
@@ -322,10 +329,10 @@
       if (on) {
         amountEl.classList.add("changed");
         changedEl.textContent = "receiptCore.action.amountMinor changed after signing. Digest and signature still claim the original bytes.";
-        M.fadeIn(changedEl, { rise: 4 }); // concurrent with the checks re-evaluating
+        changedEl.animate([{ opacity: 0, transform: "translateY(4px)" }, { opacity: 1, transform: "translateY(0)" }], { duration: 220, easing: M.EASE_OUT, fill: "forwards" });
       } else {
         amountEl.classList.remove("changed");
-        changedEl.hidden = true;
+        changedEl.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 160, easing: M.EASE_IN, fill: "forwards" });
       }
       $("toggle-sub").textContent = on ? "Showing the tampered copy. Toggle to return to the signed receipt." : "Same receipt, amount changed to $950.00 after signing";
 

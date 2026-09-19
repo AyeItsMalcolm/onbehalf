@@ -67,6 +67,7 @@ export async function morphChip(chip, { tone, text }) {
   }
 
   if (oldText !== text) {
+    const widthBefore = textEl.getBoundingClientRect().width;
     const ghost = document.createElement("span");
     ghost.className = "ghost";
     ghost.textContent = oldText;
@@ -74,6 +75,20 @@ export async function morphChip(chip, { tone, text }) {
     ghost.style.color = getComputedStyle(textEl).color;
     textEl.textContent = text;
     textEl.appendChild(ghost);
+    // Ease the width between the two texts so the chip never snaps.
+    const widthAfter = textEl.getBoundingClientRect().width;
+    if (Math.abs(widthAfter - widthBefore) > 1) {
+      textEl.style.whiteSpace = "nowrap";
+      textEl.style.overflow = "hidden";
+      anims.push(
+        finished(
+          textEl.animate([{ width: `${widthBefore}px` }, { width: `${widthAfter}px` }], { duration: d(200), easing: EASE_OUT }),
+        ).then(() => {
+          textEl.style.whiteSpace = "";
+          textEl.style.overflow = "";
+        }),
+      );
+    }
     anims.push(
       ghost
         .animate(
