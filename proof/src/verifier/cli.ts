@@ -11,20 +11,11 @@
  */
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { verifyPackage, type AnchorReader, type Check, type VerifierConfig } from "./core.js";
+import { verifyPackage, type AnchorReader, type VerifierConfig } from "./core.js";
 import { nodeCryptoAdapter } from "./adapters-node.js";
+import { formatReport } from "./format.js";
 
 const CONFIG_PATH = resolve(process.cwd(), "proof/verifier.config.json");
-
-function pad(text: string, width: number): string {
-  return text.length >= width ? text : text + " ".repeat(width - text.length);
-}
-
-function formatCheck(c: Check): string {
-  const head = `${pad(c.name, 10)} ${pad(c.status, 8)} ${c.reason}`;
-  if (!c.lines || c.lines.length === 0) return head;
-  return [head, ...c.lines.map((l) => `${" ".repeat(19)}${l}`)].join("\n");
-}
 
 async function main(): Promise<number> {
   const args = process.argv.slice(2);
@@ -64,9 +55,7 @@ async function main(): Promise<number> {
     console.log(`Verifying ${file}`);
     console.log(`Trusted config: ${CONFIG_PATH}`);
     console.log("");
-    for (const c of report.checks) console.log(formatCheck(c));
-    console.log("");
-    console.log(`${pad("Result", 10)} ${report.result}  ${report.summary}`);
+    console.log(formatReport(report));
   }
 
   switch (report.result) {

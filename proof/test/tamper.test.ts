@@ -13,7 +13,7 @@ describe("tamper detection", () => {
     const base = loadPackage();
     const config = loadConfig();
     const paths = leafPaths(base.receiptCore);
-    expect(paths.length).toBeGreaterThan(40);
+    expect(paths.length, "signed leaf fields; the narrated number").toBe(48);
     for (const path of paths) {
       const pkg = clone(base);
       setAt(pkg.receiptCore, path, mutate(getAt(pkg.receiptCore, path)));

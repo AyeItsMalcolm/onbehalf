@@ -1,0 +1,494 @@
+/* Onbehalf demo — tokens and components. See docs/DESIGN_BRIEF.md. */
+
+:root {
+  --bg: #f4f1ec;
+  --surface: #ffffff;
+  --ink: #14161a;
+  --muted: #5b564f;
+  --caption: #857f76;
+  --border: #ddd7cd;
+  --amber: #b7791f;
+  --green: #0f6e56;
+  --red: #b42318;
+  --link: #1f4fb3;
+  --shadow: 0 1px 2px rgba(20, 22, 26, 0.06);
+  --radius-card: 12px;
+  --radius-control: 8px;
+  --font: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --t-micro: 200ms;
+  --t-state: 350ms;
+}
+
+@view-transition {
+  navigation: auto;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 2px;
+  border-radius: var(--radius-control);
+}
+
+.mono {
+  font-family: var(--mono);
+  font-variant-ligatures: none;
+}
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- layout ---------- */
+
+.container {
+  width: 100%;
+  max-width: 1184px; /* 1120 content + 2 × 32 padding */
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+main.container {
+  flex: 1;
+  padding-top: 40px;
+  padding-bottom: 48px;
+}
+
+/* ---------- nav ---------- */
+
+.nav {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.nav .container {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+}
+.wordmark:hover {
+  text-decoration: none;
+}
+.wordmark svg {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.nav-links {
+  display: flex;
+  gap: 22px;
+}
+.nav-links a {
+  color: var(--muted);
+  font-weight: 500;
+}
+.nav-links a[aria-current="page"] {
+  color: var(--ink);
+}
+.nav-links a:hover {
+  color: var(--ink);
+  text-decoration: none;
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--caption);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ---------- typography ---------- */
+
+.page-title {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin: 0;
+}
+.page-sub {
+  margin: 6px 0 0;
+  color: var(--muted);
+}
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 16px;
+}
+.label {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--caption);
+}
+.caption {
+  font-size: 12px;
+  color: var(--caption);
+}
+.muted {
+  color: var(--muted);
+}
+.crumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-weight: 500;
+  margin-bottom: 18px;
+}
+.crumb:hover {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+/* ---------- cards and rows ---------- */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow);
+  padding: 24px;
+}
+.stack > * + * {
+  margin-top: 16px;
+}
+.kv {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  row-gap: 12px;
+  column-gap: 24px;
+  align-items: baseline;
+}
+.kv .label {
+  padding-top: 2px;
+}
+.kv .value {
+  color: var(--ink);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.kv .value.mono {
+  font-size: 13px;
+}
+
+/* ---------- chips ---------- */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  color: var(--ink);
+  white-space: nowrap;
+  position: relative;
+}
+.chip .dot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: none;
+  background: var(--caption);
+}
+.chip .dot .ghost {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+.chip[data-tone="amber"] .dot {
+  background: var(--amber);
+}
+.chip[data-tone="green"] .dot {
+  background: var(--green);
+}
+.chip[data-tone="red"] .dot {
+  background: var(--red);
+}
+.chip[data-tone="muted"] .dot {
+  background: var(--caption);
+}
+.chip[data-tone="red"] .chip-text {
+  color: var(--red);
+}
+.chip .chip-text {
+  position: relative;
+  display: inline-block;
+}
+.chip .chip-text .ghost {
+  position: absolute;
+  left: 0;
+  top: 0;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* ---------- buttons ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 12px 18px;
+  border-radius: var(--radius-control);
+  border: 1px solid transparent;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color var(--t-micro) var(--ease-out),
+    color var(--t-micro) var(--ease-out),
+    border-color var(--t-micro) var(--ease-out),
+    opacity var(--t-micro) var(--ease-out);
+  text-decoration: none;
+}
+.btn:hover {
+  text-decoration: none;
+}
+.btn-primary {
+  background: var(--ink);
+  color: var(--bg);
+}
+.btn-primary:hover {
+  background: #000;
+}
+.btn-secondary {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--border);
+}
+.btn-secondary:hover {
+  background: var(--bg);
+}
+.btn-danger {
+  background: transparent;
+  color: var(--red);
+  border-color: var(--border);
+}
+.btn-danger:hover {
+  background: var(--bg);
+  border-color: var(--red);
+}
+.btn[disabled],
+.btn[aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.btn-pressed {
+  transform: scale(0.97);
+}
+
+/* ---------- status strip ---------- */
+
+.strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow);
+}
+.strip > div {
+  padding: 18px 24px;
+  border-left: 1px solid var(--border);
+  /* Tall enough for the secondary "Anchor pending" line, so nothing shifts when it appears. */
+  min-height: 112px;
+}
+.strip > div:first-child {
+  border-left: 0;
+}
+.strip .label {
+  display: block;
+  margin-bottom: 10px;
+}
+.strip .sub {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--amber);
+  font-weight: 500;
+}
+.strip .sub .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--amber);
+}
+.strip .sub.on {
+  display: flex;
+}
+
+/* A label above a full-width value, for long mono values like digests. */
+.block-field .label {
+  display: block;
+  margin-bottom: 8px;
+}
+.block-field .digest {
+  display: block;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+.block-field + .kv {
+  margin-top: 14px;
+}
+.grid-2.wide-right {
+  grid-template-columns: 5fr 7fr;
+}
+
+/* ---------- inline editable amount ---------- */
+
+.amount-field {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  border-bottom: 1px dashed var(--border);
+  transition: border-color var(--t-micro) var(--ease-out);
+}
+.amount-field:focus-within {
+  border-bottom-color: var(--link);
+}
+.amount-field input {
+  font: inherit;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  width: 8ch;
+  outline: none;
+}
+.amount-field .unit {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--muted);
+}
+.amount-field .hint {
+  margin-left: 8px;
+}
+
+/* ---------- footer ---------- */
+
+.foot {
+  border-top: 1px solid var(--border);
+  padding: 20px 0;
+}
+.foot .container {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* ---------- motion ---------- */
+
+[data-reveal] {
+  opacity: 0;
+}
+[data-reveal].revealed {
+  opacity: 1;
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+.pulse {
+  animation: pulse-soft 1.2s ease-in-out 2;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 250ms;
+}
+::view-transition-group(action-card) {
+  animation-duration: 350ms;
+  animation-timing-function: var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+  [data-reveal] {
+    opacity: 1;
+  }
+  @view-transition {
+    navigation: none;
+  }
+}

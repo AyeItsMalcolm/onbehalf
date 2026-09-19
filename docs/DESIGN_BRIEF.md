@@ -52,7 +52,7 @@ Amber, green, red appear only as an 8 px dot plus text, or as text on a PASS/FAI
 ## Layout
 
 - Content max 1120 px, centered, 32 px side padding. At 1920×1080 the content sits in a 1120 px column with equal margins; nothing important below the fold on action detail and receipt.
-- Top nav: `Onbehalf` wordmark (Geist 20/700, −0.02em) with the 28 px mark (outer open bracket in ink, small solid dot offset inside in green); right side links `Approvals · Actions · Receipts · Verifier` and the persistent pill `Sandbox · Stripe test · BNB testnet` in caption on surface with border.
+- Top nav: `Onbehalf` wordmark (Geist 20/700, −0.02em) with the 28 px mark (outer open bracket in ink, small solid dot offset inside in green); right side links `Approvals · Actions · Receipts · Verifier` and the persistent pill `Sandbox · Stripe test` in caption on surface with border (no chain named, per PBX-021; `DESIGN_NOTES.md` predates that decision).
 - Cards: surface, 1 px border, 12 px radius, 24 px padding, `--shadow`.
 - Key/value rows: two-column grid, 140 px label column in caption uppercase, value in ink 14 px. Row gap 12 px.
 - Buttons: primary = ink background, bg text, 8 px radius, 12 px 18 px padding, 600 weight, min height 44 px. Secondary = transparent, 1 px border. Danger = secondary with red text. Hover: primary darkens to `#000`, secondary gets `--bg` background. Active: scale 0.97 for 120 ms. Focus: 2 px `--link` ring, 2 px offset.

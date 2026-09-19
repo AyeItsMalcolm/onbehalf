@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Refund · $750.00 USD — Onbehalf</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/tokens.css" />
+  <style>
+    .title-block {
+      view-transition-name: action-card;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+    .title-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+      padding-top: 6px;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 24px;
+    }
+    .actions-note {
+      text-align: right;
+      margin-top: 12px;
+    }
+    #view-receipt {
+      min-width: 180px;
+    }
+  </style>
+</head>
+<body>
+  <header class="nav" id="nav"></header>
+
+  <main class="container">
+    <a class="crumb" href="index.html" data-reveal>&larr; Approvals</a>
+
+    <div class="title-block" data-reveal>
+      <div>
+        <h1 class="page-title">Refund · <span id="title-amount" class="tabular">$750.00 USD</span></h1>
+        <p class="page-sub" id="title-sub"></p>
+      </div>
+      <div class="title-right">
+        <span class="chip" id="header-chip" data-tone="amber"><span class="dot"></span><span class="chip-text">Awaiting approval</span></span>
+        <span class="caption">Expires in <span id="expires" class="tabular">14:32</span></span>
+      </div>
+    </div>
+
+    <div class="stack">
+      <div class="grid-2">
+        <section class="card" data-reveal aria-labelledby="h-request">
+          <h2 class="section-title" id="h-request">Request</h2>
+          <div class="kv">
+            <span class="label">Action type</span><span class="value mono" id="v-action-type"></span>
+            <span class="label">Target</span><span class="value mono" id="v-target"></span>
+            <span class="label">Amount</span>
+            <span class="value">
+              <span class="amount-field">
+                <input id="amount" inputmode="decimal" aria-label="Refund amount in dollars" value="750.00" />
+                <span class="unit">USD</span>
+              </span>
+              <span class="caption hint" id="amount-hint">Edit to see the binding change</span>
+            </span>
+            <span class="label">Currency</span><span class="value" id="v-currency"></span>
+            <span class="label">Reason</span><span class="value" id="v-reason"></span>
+          </div>
+        </section>
+
+        <section class="card" data-reveal aria-labelledby="h-authority">
+          <h2 class="section-title" id="h-authority">Authority</h2>
+          <div class="kv">
+            <span class="label">Mandate</span><span class="value mono" id="v-mandate"></span>
+            <span class="label">Version</span><span class="value" id="v-mandate-version"></span>
+            <span class="label">Autonomous limit</span><span class="value tabular" id="v-auto-limit"></span>
+            <span class="label">Approval limit</span><span class="value tabular" id="v-approval-limit"></span>
+            <span class="label">Status</span><span class="value"><span class="chip" data-tone="green"><span class="dot"></span><span class="chip-text">Active</span></span></span>
+          </div>
+        </section>
+      </div>
+
+      <div class="grid-2 wide-right">
+        <section class="card" data-reveal aria-labelledby="h-policy">
+          <h2 class="section-title" id="h-policy">Policy</h2>
+          <div class="kv">
+            <span class="label">Decision</span><span class="value"><span class="chip" data-tone="amber"><span class="dot"></span><span class="chip-text mono">REQUIRE_APPROVAL</span></span></span>
+            <span class="label">Reason</span><span class="value mono" id="v-reason-code"></span>
+            <span class="label">Policy</span><span class="value mono" id="v-policy"></span>
+            <span class="label">Rule</span><span class="value" id="v-rule"></span>
+            <span class="label">Evaluated at</span><span class="value tabular" id="v-evaluated"></span>
+          </div>
+        </section>
+
+        <section class="card binding-card" data-reveal aria-labelledby="h-binding">
+          <h2 class="section-title" id="h-binding">Approval binding</h2>
+          <div class="block-field">
+            <span class="label">Binding digest</span>
+            <span class="digest" id="binding-digest" title=""></span>
+          </div>
+          <div class="kv">
+            <span class="label">Bound to</span><span class="value" id="v-bound"></span>
+            <span class="label">Approver</span><span class="value" id="v-approver"></span>
+            <span class="label">Expires</span><span class="value tabular" id="v-expires"></span>
+          </div>
+        </section>
+      </div>
+
+      <div class="strip" data-reveal role="list" aria-label="Status">
+        <div role="listitem">
+          <span class="label">Policy</span>
+          <span class="chip" id="s-policy" data-tone="amber"><span class="dot"></span><span class="chip-text">Require approval</span></span>
+        </div>
+        <div role="listitem">
+          <span class="label">Approval</span>
+          <span class="chip" id="s-approval" data-tone="amber"><span class="dot"></span><span class="chip-text">Awaiting approval</span></span>
+        </div>
+        <div role="listitem">
+          <span class="label">Execution</span>
+          <span class="chip" id="s-execution" data-tone="muted"><span class="dot"></span><span class="chip-text">Execution not started</span></span>
+        </div>
+        <div role="listitem">
+          <span class="label">Evidence</span>
+          <span class="chip" id="s-evidence" data-tone="muted"><span class="dot"></span><span class="chip-text">Not issued</span></span>
+          <span class="sub" id="s-anchor"><span class="dot"></span>Anchor pending</span>
+        </div>
+      </div>
+
+      <div data-reveal>
+        <div class="actions" id="actions">
+          <a class="btn btn-danger" id="reject" href="index.html?rejected=1">Reject</a>
+          <button class="btn btn-primary" id="approve" type="button">Approve exact action</button>
+          <a class="btn btn-primary" id="view-receipt" href="receipt.html" hidden>View receipt</a>
+        </div>
+        <p class="caption actions-note" id="actions-note">Approving binds your decision to this exact amount, target, mandate v3, and policy v1. Any change requires a new approval.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="foot" id="foot"></footer>
+
+  <script type="module">
+    import { DATA } from "./assets/data.js";
+    import { renderNav, renderFooter, money, ellipsize, utc, mmss } from "./assets/format.js";
+    import { bindingDigest, factsFromCore } from "./assets/crypto.js";
+    import * as M from "./assets/motion.js";
+
+    const core = DATA.core;
+    const $ = (id) => document.getElementById(id);
+
+    document.getElementById("nav").innerHTML = renderNav("Approvals", DATA);
+    document.getElementById("foot").innerHTML = renderFooter();
+
+    // ---- fill values from the real signed receipt core ----
+    $("title-sub").textContent = `Requested by ${core.subject.agentRef} ${core.subject.agentVersion} · ${core.action.actionId} · ${utc(DATA.request.requestedAt)}`;
+    $("v-action-type").textContent = core.action.actionType;
+    $("v-target").textContent = ellipsize(core.action.targetRef, 5, 2);
+    $("v-target").title = core.action.targetRef;
+    $("v-currency").textContent = core.action.currency.toUpperCase();
+    $("v-reason").textContent = DATA.request.reason;
+    $("v-mandate").textContent = core.authority.mandateRef;
+    $("v-mandate-version").textContent = `v${core.authority.mandateVersion}`;
+    $("v-auto-limit").textContent = money(DATA.mandate.autonomousLimitMinor);
+    $("v-approval-limit").textContent = money(DATA.mandate.approvalLimitMinor);
+    $("v-reason-code").textContent = core.policy.reasonCodes.join(", ");
+    $("v-policy").textContent = `${core.policy.policyRef} · v${core.policy.policyVersion}`;
+    $("v-rule").textContent = `Above ${money(DATA.mandate.autonomousLimitMinor)} and at most ${money(DATA.mandate.approvalLimitMinor)} requires a human`;
+    $("v-evaluated").textContent = utc(core.policy.evaluatedAt);
+    $("v-bound").textContent = `amount, target, mandate v${core.authority.mandateVersion}, policy v${core.policy.policyVersion}`;
+    $("v-approver").textContent = `${DATA.story.approver} (pending)`;
+    $("v-expires").textContent = utc(DATA.story.expiresAt);
+
+    const digestEl = $("binding-digest");
+    const ORIGINAL_DIGEST = core.approval.bindingDigest;
+    digestEl.textContent = ORIGINAL_DIGEST;
+    digestEl.title = ORIGINAL_DIGEST;
+
+    // ---- countdown ----
+    let remaining = DATA.story.expiresInSeconds;
+    const expiresEl = $("expires");
+    const countdown = setInterval(() => {
+      remaining -= 1;
+      expiresEl.textContent = mmss(remaining);
+      if (remaining <= 0) clearInterval(countdown);
+    }, 1000);
+
+    // ---- live binding (Moment 2) ----
+    const amountInput = $("amount");
+    const headerChip = $("header-chip");
+    const approvalChip = $("s-approval");
+    const approveBtn = $("approve");
+    const titleAmount = $("title-amount");
+    let invalidated = false;
+    let latest = 0;
+
+    async function onAmountChange() {
+      const seq = ++latest;
+      const parsed = Number.parseFloat(amountInput.value.replace(/[^0-9.]/g, ""));
+      const minor = Number.isFinite(parsed) ? Math.round(parsed * 100) : NaN;
+      const changed = minor !== core.action.amountMinor;
+
+      const digest = Number.isFinite(minor) ? await bindingDigest(factsFromCore(core, minor)) : "sha256:" + "—".repeat(64);
+      if (seq !== latest) return;
+
+      titleAmount.textContent = Number.isFinite(minor) ? money(minor) : "—";
+      digestEl.title = digest;
+      M.scrambleHex(digestEl, digest, "sha256:".length);
+
+      if (changed && !invalidated) {
+        invalidated = true;
+        approveBtn.disabled = true;
+        $("amount-hint").textContent = "Amount differs from the approved request";
+        await Promise.all([
+          M.morphChip(headerChip, { tone: "red", text: "Approval invalidated: action changed" }),
+          M.morphChip(approvalChip, { tone: "red", text: "Approval invalidated" }),
+        ]);
+        M.shake(headerChip);
+        M.shake(approvalChip);
+      } else if (!changed && invalidated) {
+        invalidated = false;
+        approveBtn.disabled = false;
+        $("amount-hint").textContent = "Edit to see the binding change";
+        M.morphChip(headerChip, { tone: "amber", text: "Awaiting approval" });
+        M.morphChip(approvalChip, { tone: "amber", text: "Awaiting approval" });
+      }
+    }
+    amountInput.addEventListener("input", onAmountChange);
+    amountInput.addEventListener("blur", () => {
+      const parsed = Number.parseFloat(amountInput.value.replace(/[^0-9.]/g, ""));
+      if (Number.isFinite(parsed)) amountInput.value = parsed.toFixed(2);
+    });
+
+    // ---- approve (Moment 1) ----
+    approveBtn.addEventListener("click", async () => {
+      if (invalidated) return;
+      clearInterval(countdown);
+      approveBtn.disabled = true;
+      $("reject").setAttribute("aria-disabled", "true");
+      amountInput.disabled = true;
+      await M.press(approveBtn);
+
+      const approvedText = `Approved by ${DATA.story.approver}`;
+      $("v-approver").textContent = DATA.story.approver;
+      await Promise.all([
+        M.morphChip(headerChip, { tone: "green", text: approvedText }),
+        M.morphChip(approvalChip, { tone: "green", text: approvedText }),
+      ]);
+      expiresEl.parentElement.textContent = `Decided ${utc(core.approval.decidedAt)}`;
+
+      const exec = $("s-execution");
+      const evid = $("s-evidence");
+
+      await M.sleep(500);
+      const stopExecPulse = M.pulse(exec);
+      await M.morphChip(exec, { tone: "muted", text: "Executing…" });
+
+      await M.sleep(500);
+      stopExecPulse();
+      await M.morphChip(exec, { tone: "green", text: "Provider confirmed" });
+
+      await M.sleep(500);
+      const stopEvidPulse = M.pulse(evid);
+      await M.morphChip(evid, { tone: "muted", text: "Signing receipt…" });
+
+      await M.sleep(500);
+      stopEvidPulse();
+      await M.morphChip(evid, { tone: "green", text: "Receipt signed" });
+
+      // Hold on green, then the anchor state arrives as a secondary line.
+      await M.sleep(600);
+      const anchorLine = $("s-anchor");
+      anchorLine.classList.add("on");
+      anchorLine.style.opacity = "0";
+      await M.fadeIn(anchorLine, { rise: 4, duration: 220 });
+      anchorLine.style.opacity = "";
+
+      await M.sleep(200);
+      await Promise.all([M.fadeOut(approveBtn), M.fadeOut($("reject"))]);
+      $("actions-note").textContent = "Receipt rcpt_s2_7f3a9c2e is signed. The anchor is a separate, later state.";
+      await M.fadeIn($("view-receipt"));
+      $("view-receipt").focus({ preventScroll: true });
+    });
+
+    // ---- load reveal ----
+    M.revealAll();
+  </script>
+</body>
+</html>
