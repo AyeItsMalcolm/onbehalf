@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Receipt rcpt_s2_7f3a9c2e — Onbehalf</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/tokens.css" />
+  <style>
+    .title-block {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .title-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+      padding-top: 6px;
+    }
+    .cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+    /* Grid children must be allowed to shrink below their content's minimum
+       width, or the terminal block's long lines push the document to a sliver. */
+    .cols > * {
+      min-width: 0;
+    }
+    .note {
+      margin: 12px 0 0;
+    }
+    .anchor-panel p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <header class="nav" id="nav"></header>
+
+  <main class="container">
+    <a class="crumb" href="action.html" data-reveal>&larr; Refund · $750.00 USD</a>
+
+    <div class="title-block" data-reveal>
+      <div>
+        <h1 class="page-title">Receipt <span class="mono" id="title-id"></span></h1>
+        <p class="page-sub" id="title-sub"></p>
+      </div>
+      <div class="title-right">
+        <span class="chip" id="header-chip" data-tone="amber"><span class="dot"></span><span class="chip-text">Receipt signed; anchor pending</span></span>
+        <span class="caption" id="header-level"></span>
+      </div>
+    </div>
+
+    <div class="cols">
+      <!-- The document -->
+      <article class="card doc" id="doc" data-reveal aria-label="Signed receipt">
+        <div class="doc-head">
+          <div>
+            <p class="doc-id" id="doc-id"></p>
+            <p class="doc-meta" id="doc-meta"></p>
+          </div>
+          <div class="seal" id="seal"></div>
+        </div>
+
+        <div class="ledger">
+          <div class="ledger-row">
+            <span class="label">Mandate</span>
+            <div>
+              <div class="primary"><span class="mono" id="m-ref"></span><span class="chip" data-tone="green"><span class="dot"></span><span class="chip-text">Active</span></span></div>
+              <div class="secondary"><span>Active at evaluation and at execution</span><span class="mono" id="m-digest"></span></div>
+            </div>
+          </div>
+          <div class="ledger-row">
+            <span class="label">Policy</span>
+            <div>
+              <div class="primary"><span class="chip" data-tone="amber"><span class="dot"></span><span class="chip-text mono">REQUIRE_APPROVAL</span></span><span class="mono" id="p-reason"></span></div>
+              <div class="secondary"><span class="mono" id="p-ref"></span><span id="p-at"></span><span class="mono" id="p-digest"></span></div>
+            </div>
+          </div>
+          <div class="ledger-row">
+            <span class="label">Approval</span>
+            <div>
+              <div class="primary"><span class="chip" data-tone="green"><span class="dot"></span><span class="chip-text" id="a-by"></span></span></div>
+              <div class="secondary"><span id="a-at"></span><span>binding</span><span class="mono" id="a-digest"></span></div>
+            </div>
+          </div>
+          <div class="ledger-row">
+            <span class="label">Execution</span>
+            <div>
+              <div class="primary"><span class="chip" data-tone="green"><span class="dot"></span><span class="chip-text">Provider confirmed</span></span><span class="mono" id="e-ref"></span></div>
+              <div class="secondary"><span id="e-provider"></span><span id="e-at"></span><span id="e-source"></span></div>
+            </div>
+          </div>
+          <div class="ledger-row">
+            <span class="label">Evidence</span>
+            <div>
+              <div class="primary"><span class="mono" id="v-level"></span><span class="chip" data-tone="amber"><span class="dot"></span><span class="chip-text">Receipt signed; anchor pending</span></span></div>
+              <div class="secondary"><span id="v-events"></span><span class="mono" id="v-digest"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="doc-foot">
+          <div class="amount-line">
+            <span class="label">Amount</span>
+            <span class="amount" id="doc-amount"></span>
+          </div>
+          <p class="caption" id="doc-changed" hidden></p>
+          <div class="hash-line"><span class="label">Digest</span><span class="mono" id="f-digest"></span></div>
+          <div class="hash-line"><span class="label">Signature</span><span class="mono" id="f-sig"></span></div>
+          <div class="hash-line"><span class="label">Issuer key</span><span class="mono" id="f-key"></span></div>
+          <ul class="limits" id="limits"></ul>
+        </div>
+      </article>
+
+      <!-- The verifier -->
+      <aside class="card" data-reveal aria-label="Verifier">
+        <h2 class="section-title">Verifier</h2>
+        <div class="checks" id="checks"></div>
+        <div class="banner" id="banner" data-tone="muted"><span class="dot"></span><span id="banner-text">Checking…</span></div>
+        <p class="error-line" id="verify-error" hidden></p>
+
+        <button class="toggle" id="toggle" type="button" aria-pressed="false">
+          <span>Show tampered copy<span class="toggle-sub" id="toggle-sub">Same receipt, amount changed to $950.00 after signing</span></span>
+          <span class="switch" aria-hidden="true"><span class="knob"></span></span>
+        </button>
+
+        <h3 class="panel-title">Anchor details</h3>
+        <div class="anchor-panel">
+          <span class="chip" data-tone="amber"><span class="dot"></span><span class="chip-text" id="anchor-state"></span></span>
+          <p id="anchor-copy"></p>
+        </div>
+
+        <div class="links">
+          <a id="dl-genuine" href="assets/receipt.s2.package.json" download="receipt.s2.package.json">Download receipt package</a>
+          <a id="dl-tampered" href="assets/receipt.s2.tampered.json" download="receipt.s2.tampered.json">Download tampered copy</a>
+        </div>
+
+        <h3 class="panel-title">Run it yourself</h3>
+        <pre class="cli" id="cli"></pre>
+        <p class="caption" id="engine"></p>
+
+        <p class="caption note">Covers the configured gateway route only. Does not prove completeness, legal authority, or safe agent behavior.</p>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="foot" id="foot"></footer>
+
+  <script type="module">
+    import { DATA } from "./assets/data.js";
+    import { renderNav, renderFooter, money, ellipsize, utc, MARK_SVG } from "./assets/format.js";
+    import { verifyPackage, createWebCryptoAdapter, canonicalizeJson, webEd25519Verify } from "./assets/verifier.js";
+    import * as M from "./assets/motion.js";
+
+    const $ = (id) => document.getElementById(id);
+    const core = DATA.core;
+    const proof = DATA.proof;
+
+    $("nav").innerHTML = renderNav("Receipts", DATA);
+    $("foot").innerHTML = renderFooter();
+
+    // ---- title ----
+    $("title-id").textContent = core.receiptId;
+    $("title-sub").textContent = `Issued ${utc(core.issuedAt)} · ${core.issuer.issuerId} · ${core.schema}@${core.schemaVersion}`;
+    $("header-level").textContent = `Evidence level ${core.evidence.level}`;
+    const headerChip = $("header-chip");
+    headerChip.classList.add("pulse");
+    headerChip.style.animationIterationCount = "1";
+
+    // ---- document ----
+    $("doc-id").textContent = core.receiptId;
+    $("doc-meta").textContent = `Issued ${utc(core.issuedAt)} · ${core.scope.environment} · ${core.scope.coveredRoute}`;
+    $("seal").innerHTML = `${MARK_SVG}<span class="seal-text"><span>${core.issuer.issuerId}</span><span class="mono">${core.issuer.keyId}</span></span>`;
+
+    $("m-ref").textContent = `${core.authority.mandateRef} · v${core.authority.mandateVersion}`;
+    $("m-digest").textContent = ellipsize(core.authority.mandateDigest, 15, 6);
+    $("m-digest").title = core.authority.mandateDigest;
+    $("p-reason").textContent = core.policy.reasonCodes.join(", ");
+    $("p-ref").textContent = `${core.policy.policyRef} · v${core.policy.policyVersion}`;
+    $("p-at").textContent = utc(core.policy.evaluatedAt);
+    $("p-digest").textContent = ellipsize(core.policy.policyDigest, 15, 6);
+    $("p-digest").title = core.policy.policyDigest;
+    $("a-by").textContent = `Approved by ${DATA.story.approver}`;
+    $("a-at").textContent = utc(core.approval.decidedAt);
+    $("a-digest").textContent = ellipsize(core.approval.bindingDigest, 15, 6);
+    $("a-digest").title = core.approval.bindingDigest;
+    $("e-ref").textContent = ellipsize(core.execution.providerObjectRef, 5, 3);
+    $("e-ref").title = core.execution.providerObjectRef;
+    $("e-provider").textContent = `${core.execution.provider} · ${core.execution.providerEnvironment}`;
+    $("e-at").textContent = `observed ${utc(core.execution.observedAt)}`;
+    $("e-source").textContent = `source: ${core.execution.observationSources.join(", ")}`;
+    $("v-level").textContent = core.evidence.level;
+    $("v-events").textContent = `${core.evidence.recordedEventCount} recorded events`;
+    $("v-digest").textContent = ellipsize(core.evidence.evidenceManifestDigest, 15, 6);
+    $("v-digest").title = core.evidence.evidenceManifestDigest;
+
+    $("doc-amount").textContent = money(core.action.amountMinor, core.action.currency);
+    $("f-digest").textContent = proof.digest;
+    $("f-sig").textContent = ellipsize(proof.signature, 22, 10);
+    $("f-sig").title = proof.signature;
+    $("f-key").textContent = `${core.issuer.keyId} · ${ellipsize(proof.publicKeyFingerprint, 15, 6)}`;
+    $("f-key").title = proof.publicKeyFingerprint;
+    $("limits").innerHTML = core.evidence.limitations.map((l) => `<li>${l}</li>`).join("");
+
+    // ---- anchor panel (PBX-021) ----
+    $("anchor-state").textContent = "Receipt signed; anchor pending";
+    $("anchor-copy").textContent =
+      `Anchor state ${DATA.anchorProof.state}: ${DATA.anchorProof.reason}. The EvidenceAnchor contract is written and covered by ${DATA.counts.contractTests} Foundry tests; deployment and the chain used are a configuration step, not part of this demo. The verifier reports the anchor separately from the signature, so nothing here is presented as on chain.`;
+
+    // ---- verifier ----
+    const CHECK_NAMES = ["Schema", "Digest", "Signature", "Issuer", "Anchor"];
+    const checksEl = $("checks");
+    checksEl.innerHTML = CHECK_NAMES.map(
+      (n) => `<div class="check" data-name="${n}" data-status="CHECKING">
+        <span class="name">${n}</span>
+        <span class="status"><span class="status-text">…</span><span class="underline"></span></span>
+        <span class="why"></span>
+      </div>`,
+    ).join("");
+
+    const adapter = createWebCryptoAdapter({ canonicalize: canonicalizeJson, onEngine: (e) => ($("engine").textContent = `Signature checked in this browser with ${e === "webcrypto" ? "WebCrypto Ed25519" : "a fallback verifier"}. Digest computed with SubtleCrypto SHA-256.`) });
+
+    function displayStatus(check) {
+      if (check.name === "Anchor" && check.status === "SKIPPED") return "PENDING";
+      return check.status;
+    }
+    function displayReason(check) {
+      if (check.name === "Anchor" && check.status === "SKIPPED") return "not submitted in demo";
+      return check.reason;
+    }
+
+    async function applyReport(report, { animate }) {
+      const rows = Array.from(checksEl.querySelectorAll(".check"));
+      for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+        const check = report.checks.find((c) => c.name === row.dataset.name);
+        const next = displayStatus(check);
+        const changedToFail = next === "FAIL" && row.dataset.status !== "FAIL";
+        if (animate) await M.sleep(120);
+        row.dataset.status = next;
+        row.querySelector(".status-text").textContent = next;
+        row.querySelector(".why").textContent = displayReason(check);
+        if (animate && changedToFail) {
+          const u = row.querySelector(".underline");
+          u.animate([{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], { duration: 250, easing: M.EASE_OUT, fill: "forwards" });
+        } else if (next !== "FAIL") {
+          row.querySelector(".underline").getAnimations().forEach((a) => a.cancel());
+        }
+      }
+      const banner = $("banner");
+      const failed = report.checks.filter((c) => c.status === "FAIL").map((c) => c.name);
+      const tone = report.result === "INVALID" ? "red" : report.result === "INCOMPLETE" ? "muted" : "green";
+      const text =
+        report.result === "INVALID"
+          ? `Verification invalid <span class="banner-sub">— ${failed.join(", ")}</span>`
+          : report.result === "INCOMPLETE"
+            ? "Verification incomplete"
+            : `Verification valid <span class="banner-sub">— signature and issuer; anchor pending</span>`;
+      const apply = () => {
+        banner.dataset.tone = tone;
+        $("banner-text").innerHTML = text;
+      };
+      if (animate) await M.slideSwap(banner, apply);
+      else apply();
+    }
+
+    function renderCli(which) {
+      const c = DATA.cli[which];
+      const lines = c.output.split("\n").map((l) => {
+        if (/^\S+\s+PASS/.test(l)) return `<span class="pass">${l}</span>`;
+        if (/^\S+\s+FAIL/.test(l)) return `<span class="fail">${l}</span>`;
+        if (/^\S+\s+SKIPPED/.test(l)) return `<span class="skip">${l}</span>`;
+        if (/^Result\s+INVALID/.test(l)) return `<span class="fail">${l}</span>`;
+        if (/^Result\s+VALID/.test(l)) return `<span class="pass">${l}</span>`;
+        return l;
+      });
+      $("cli").innerHTML = `<span class="prompt">$ </span>${c.command}\n${lines.join("\n")}`;
+    }
+
+    const genuinePkg = { receiptCore: DATA.core, cryptographicProof: DATA.proof, anchorProof: DATA.anchorProof };
+    const tamperedPkg = { receiptCore: DATA.tampered.core, cryptographicProof: DATA.tampered.proof, anchorProof: DATA.tampered.anchorProof };
+
+    // Capability probe: if this browser cannot do Ed25519 in WebCrypto, say so rather than show a false FAIL.
+    async function probe() {
+      try {
+        const raw = Uint8Array.from(atob(proof.publicKey.replace(/-/g, "+").replace(/_/g, "/").padEnd(Math.ceil(proof.publicKey.length / 4) * 4, "=")), (c) => c.charCodeAt(0));
+        await webEd25519Verify(crypto.subtle, raw, new Uint8Array(64), new Uint8Array(1));
+        return true;
+      } catch (e) {
+        return e && e.name !== "NotSupportedError";
+      }
+    }
+
+    let tampered = false;
+    const toggle = $("toggle");
+    let busy = false;
+
+    async function showTampered(on) {
+      busy = true;
+      toggle.setAttribute("aria-pressed", String(on));
+      const docEl = $("doc");
+      const amountEl = $("doc-amount");
+      const changedEl = $("doc-changed");
+      const pkg = on ? tamperedPkg : genuinePkg;
+
+      // Real verification in the browser, every time.
+      const report = await verifyPackage(pkg, DATA.verifierConfig, adapter);
+
+      // The document reflects the copy being verified.
+      amountEl.textContent = money(pkg.receiptCore.action.amountMinor, pkg.receiptCore.action.currency);
+      if (on) {
+        amountEl.classList.add("changed");
+        changedEl.textContent = "receiptCore.action.amountMinor changed after signing. Digest and signature still claim the original bytes.";
+        M.fadeIn(changedEl, { rise: 4 }); // concurrent with the checks re-evaluating
+      } else {
+        amountEl.classList.remove("changed");
+        changedEl.hidden = true;
+      }
+      $("toggle-sub").textContent = on ? "Showing the tampered copy. Toggle to return to the signed receipt." : "Same receipt, amount changed to $950.00 after signing";
+
+      await applyReport(report, { animate: true });
+      renderCli(on ? "tampered" : "genuine");
+      tampered = on;
+      busy = false;
+    }
+
+    toggle.addEventListener("click", () => {
+      if (busy) return;
+      showTampered(!tampered);
+    });
+
+    (async () => {
+      M.revealAll();
+      const ok = await probe();
+      if (!ok) {
+        $("verify-error").textContent = "This browser cannot verify Ed25519 signatures with WebCrypto. Run pnpm verify in the repository instead.";
+        $("verify-error").hidden = false;
+        toggle.disabled = true;
+        $("banner-text").textContent = "Verification not run in this browser";
+        return;
+      }
+      const report = await verifyPackage(genuinePkg, DATA.verifierConfig, adapter);
+      await applyReport(report, { animate: true });
+      renderCli("genuine");
+    })();
+  </script>
+</body>
+</html>

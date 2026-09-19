@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Approvals — Onbehalf</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/tokens.css" />
+  <style>
+    .title-block {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    #row {
+      view-transition-name: action-card;
+    }
+    .reset {
+      margin-top: 24px;
+    }
+  </style>
+</head>
+<body>
+  <header class="nav" id="nav"></header>
+
+  <main class="container">
+    <div class="title-block" data-reveal>
+      <div>
+        <h1 class="page-title">Approvals</h1>
+        <p class="page-sub" id="sub">One action awaiting a decision</p>
+      </div>
+      <span class="caption" id="asof"></span>
+    </div>
+
+    <section class="card queue-row" id="row" data-reveal aria-label="Pending action">
+      <div>
+        <p class="row-title">Refund · <span class="tabular" id="row-amount"></span></p>
+        <p class="row-sub" id="row-sub"></p>
+      </div>
+      <span class="chip" id="row-chip" data-tone="amber"><span class="dot"></span><span class="chip-text">Awaiting approval</span></span>
+      <div class="row-right">
+        <span class="caption" id="row-expires">Expires in <span class="tabular" id="expires">14:32</span></span>
+        <a class="btn btn-primary" id="review" href="action.html">Review</a>
+      </div>
+    </section>
+
+    <p class="caption empty-line" data-reveal>No other actions pending.</p>
+
+    <p class="caption reset" id="reset" data-reveal hidden><a href="index.html">Reset prototype</a></p>
+  </main>
+
+  <footer class="foot" id="foot"></footer>
+
+  <script type="module">
+    import { DATA } from "./assets/data.js";
+    import { renderNav, renderFooter, money, ellipsize, utc, mmss } from "./assets/format.js";
+    import * as M from "./assets/motion.js";
+
+    const core = DATA.core;
+    const $ = (id) => document.getElementById(id);
+
+    $("nav").innerHTML = renderNav("Approvals", DATA);
+    $("foot").innerHTML = renderFooter();
+
+    $("row-amount").textContent = money(core.action.amountMinor, core.action.currency);
+    $("row-sub").textContent = `Requested by ${core.subject.agentRef} ${core.subject.agentVersion} · ${ellipsize(core.action.targetRef, 5, 2)}`;
+    $("asof").textContent = `As of ${utc(DATA.request.requestedAt)}`;
+
+    const rejected = new URLSearchParams(location.search).get("rejected") === "1";
+
+    if (rejected) {
+      // Scenario 4: a qualified rejection. No provider call was made.
+      const chip = $("row-chip");
+      chip.dataset.tone = "red";
+      chip.querySelector(".chip-text").textContent = "Rejected by approver";
+      $("row-expires").textContent = "No provider call";
+      $("review").remove();
+      $("sub").textContent = "No actions awaiting a decision";
+      $("reset").hidden = false;
+    } else {
+      let remaining = DATA.story.expiresInSeconds;
+      const el = $("expires");
+      const timer = setInterval(() => {
+        remaining -= 1;
+        el.textContent = mmss(remaining);
+        if (remaining <= 0) clearInterval(timer);
+      }, 1000);
+    }
+
+    M.revealAll();
+  </script>
+</body>
+</html>
