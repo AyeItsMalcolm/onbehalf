@@ -25,6 +25,7 @@
     "demo": "node scripts/serve.mjs demo 4173",
     "capture": "node --import tsx scripts/capture.ts",
     "stills": "node --import tsx scripts/stills.ts",
+    "capture:demo": "node --import tsx scripts/capture-demo.ts",
     "scan:secrets": "node --env-file-if-exists=.env --import tsx scripts/scan-secrets.ts"
   },
   "dependencies": {

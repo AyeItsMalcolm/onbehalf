@@ -2,9 +2,9 @@
 
 **Agents act on behalf. We prove who.**
 
-This is the document to rehearse from. Short sections, one idea each, bold line first. Part A (the proof) is below. The screens section is added after the polish pass.
+This is the document to rehearse from. Short sections, one idea each, bold line first.
 
-**Status of this draft:** Part A complete. Screens section pending.
+**Status:** complete. Part A (the proof), Part B (the screens), the video, and the judge questions.
 
 **Numbers to say out loud:** 38 tests, 48 fields, every one caught. 11 contract tests. One $750.00 refund.
 
@@ -172,9 +172,33 @@ Result     VALID_UNANCHORED  receipt integrity and issuer verified; anchor NOT_S
 
 ---
 
-## Demo run order (the recording)
+## Piece 9: the prototype screens
 
-Before recording: `pnpm test` (should say 38 passed and 11 passed), `pnpm build:demo`, `pnpm demo` in a second terminal, browser at http://localhost:4173/ at 1920×1080.
+**Plain English:** three pages a customer would see: the approvals queue, the action an approver decides on, and the receipt with its verifier. They are static pages hard-coded to the same $750 receipt, labeled as a prototype in every footer.
+
+**Why it matters:** investors need to see the product, not a terminal. The screens show where the human sits in the loop and what "proof" looks like on a normal screen.
+
+**In the $750 scenario:** the queue shows one refund awaiting approval (and a $300 refund that went through on its own). The detail page shows what the agent asked, what the mandate allows, what policy decided, and the binding fingerprint. Approve plays the sequence: approved, executing, provider confirmed, receipt signed, anchor pending. The receipt page shows the document on the left and the verifier on the right.
+
+**What is real inside them (say this if asked):** two things run real code in the browser. The binding fingerprint on the detail page is a real SHA-256 over the exact facts: edit the amount and it recomputes. The verifier on the receipt page runs the same checks as the command line, with the browser's own Ed25519 and SHA-256, on the real signed package and on the real tampered copy. Everything else on the screens is the story: no Stripe call, no database, no login.
+
+**Technically:** plain HTML and CSS, no framework. The verifier core is bundled once for the browser from the same source as the CLI; a test proves the two produce identical reports. Motion is transform and opacity only, respects reduced-motion, and every state uses the amber / green / red vocabulary from the design notes.
+
+**To an investor:** "The screens are a prototype, and I'll say so. But the fingerprint you watched change and the two red lines at the end were computed by your browser, not drawn."
+
+---
+
+## The video
+
+**`pnpm capture:demo` renders the silent demo video** from `docs/NARRATION.md`: an opening card, nine beats across the three pages with a caption bar and a visible cursor, a closing card. Holds are derived from the spoken lines (words ÷ 2.3 + 1.5 s) so the pacing reads calm. Output: `demo/captures/onbehalf-demo.mp4` (1920×1080, H.264) and `onbehalf-demo-timestamps.txt`. Runtime about 2:32. The recorder captures at 25 fps.
+
+**Beats, in order:** card → queue → pending row → Review → amount to $950 (invalidated) → restore $750 → Approve (sequence to "Anchor pending") → View receipt (four PASS, Anchor pending) → Show tampered copy (two FAIL) → scroll to the command-line card → closing card.
+
+---
+
+## Live demo (only if a judge asks to see it run)
+
+Before: `pnpm test` (38 passed, 11 passed), `pnpm build:demo`, `pnpm demo`, browser at http://localhost:4173/ at 1920×1080.
 
 **1. Terminal: `pnpm sign`**
 Say: "This takes the receipt, turns it into one exact byte string, hashes it, and signs it. That fingerprint is the only thing that ever leaves our system."
@@ -185,17 +209,7 @@ Say: "Five separate checks. Schema, digest, signature, issuer, anchor. Not one b
 **3. Terminal: `pnpm tamper` then `pnpm verify out/receipt.s2.tampered.json`**
 Say: "One number changed, $750 to $950. Two checks fail and they say which. 38 tests, 48 fields, every one caught."
 
-**4. Browser: Approvals → Review**
-Say: "This is what the approver sees. Every fact the decision is bound to."
-
-**5. Browser: edit the amount to 950**
-Say: "Watch the binding hash. Change one cent and the approval no longer applies." Then restore 750.00: "Put it back, the original returns exactly."
-
-**6. Browser: Approve exact action**
-Say: "Approval, execution, evidence: separate steps, in order. Receipt signed. Anchor is a later state."
-
-**7. Browser: View receipt → Show tampered copy**
-Say: "Your browser just recomputed the hash and checked the signature itself. Flip to the tampered copy, and it catches the edit." Hold on the red banner. End.
+**4. Browser:** Approvals → Review → edit the amount to 950 → restore 750.00 → Approve exact action → View receipt → Show tampered copy. Same lines as the video captions.
 
 ---
 
