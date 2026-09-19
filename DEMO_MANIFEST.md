@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Purpose | YZi EASY Residency S5 application demo. Not the product. |
-| Source revision | `f9e6ed33db7f` (this manifest is committed on top of it) |
+| Source revision | `24c4e2410c4d` (this manifest is committed on top of it) |
 | Written | 2026-09-19T22:18Z |
 | Company name in UI and copy | Onbehalf. Repository folder keeps the Project Blackbox codename. |
 | Decisions in force | `DECISIONS.md` PBX-021 |
@@ -33,7 +33,9 @@
 
 ## The video
 
-- `pnpm capture:demo` → `demo/captures/onbehalf-demo.mp4` (1920×1080, H.264, 30 fps container; Playwright captures at 25 fps), `onbehalf-demo.webm`, `onbehalf-demo-timestamps.txt`. Runtime ≈ 2:32. Silent; captions and cards per `docs/NARRATION.md`; holds = words ÷ 2.3 + 1.5 s.
+- `pnpm capture:demo` → `demo/captures/onbehalf-demo.mp4` (1920×1080, H.264, 30 fps container; Playwright captures at 25 fps), `onbehalf-demo.webm`, `onbehalf-demo-timestamps.txt`, `frames/beat-<n>.png`, `gate-log.json`. Runtime ≈ 79 s. Silent; captions, cursor, and cards per `docs/NARRATION.md` v3; event-driven pacing (2.6 s read, 3.0 s register).
+- Render gate (runs after every render): per-beat frame pulled from the mp4; caption present in pixels, text matches the beat table, no overlap with the anchor, clicked controls, nav, footer, or page content; card beats show the card. Last render: PASS on all 13 checks.
+- `pnpm capture:demo --plan` is a dry run with real pacing that prints the schedule and measured runtime.
 - `demo/captures/` is gitignored; re-render from this revision to reproduce.
 
 ## Commands
