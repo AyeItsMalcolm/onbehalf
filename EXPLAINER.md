@@ -190,9 +190,9 @@ Result     VALID_UNANCHORED  receipt integrity and issuer verified; anchor NOT_S
 
 ## The video
 
-**`pnpm capture:demo` renders the silent demo video** from `docs/NARRATION.md`: an opening card, nine beats across the three pages with a caption bar and a visible cursor, a closing card. Holds are derived from the spoken lines (words ÷ 2.3 + 1.5 s) so the pacing reads calm. Output: `demo/captures/onbehalf-demo.mp4` (1920×1080, H.264) and `onbehalf-demo-timestamps.txt`. Runtime about 2:32. The recorder captures at 25 fps.
+**`pnpm capture:demo` renders the silent demo video** from `docs/NARRATION.md` v3: an opening card, eight beats across the three pages with a floating caption and a visible cursor, a closing card. Pacing is event-driven: caption in, 2.6 s to read, the action, wait for the animation to settle, 3.0 s to register, caption out. Runtime about 79 s. Output: `demo/captures/onbehalf-demo.mp4` (1920×1080, H.264) and `onbehalf-demo-timestamps.txt`. A render gate pulls one frame per beat and checks, in pixels and in the page, that the caption is there, says the right thing, and covers nothing; a card beat must show its card. The gate must pass or the video is not delivered.
 
-**Beats, in order:** card → queue → pending row → Review → amount to $950 (invalidated) → restore $750 → Approve (sequence to "Anchor pending") → View receipt (four PASS, Anchor pending) → Show tampered copy (two FAIL) → scroll to the command-line card → closing card.
+**Beats, in order:** card → queue ("One action waiting. $750 needs a person.") → Review → detail ("The approval is bound to these exact facts.") → amount to $950 ("Change the amount… / …and the approval is invalidated.") → restore ("Restore it. Same fingerprint.") → Approve ("Approve the exact action. / Executed once. Receipt signed. Anchor honestly pending.") → receipt ("Your browser re-checks the receipt. Four checks pass.") → tamper ("Same receipt, one number changed after signing. / Two checks fail, and say which.") → command-line card ("Same answer from the command line.") → closing card.
 
 ---
 

@@ -1,63 +1,65 @@
-# Onbehalf demo — narration, captions, and capture timing
+# Onbehalf demo — narration v3 (silent, event-driven)
 
-This file is the source of truth for `pnpm capture:demo` and `pnpm demo:autopilot`. Each beat's on-screen hold is derived from the spoken line: **hold = words ÷ 2.3 + 1.5 s** (Malcolm speaks at ~140 wpm). Animations and page transitions add their own time on top; they never shorten a hold. Malcolm reads the "Say" column while the finished video plays.
+This file is the source of truth for `pnpm capture:demo`. The video is silent: no voice-over, no narration track. Captions and two cards carry the story. There are no fixed holds; every beat is paced by its own events.
 
-Voice: same as the founder video. Plain, first person, short sentences. Amounts spoken as words ("seven hundred fifty dollars"). Captions are shorter than the spoken line so a muted viewer can read each one in under three seconds.
+## Pacing per beat
+
+caption fades in (200 ms) → 2.6 s read time → perform the action → wait for the animation to fully settle → 3.0 s so the result registers → 300 ms caption fade-out → next beat. (Malcolm set read and register to 2.6 s and 3.0 s on 2026-09-19, up from 1.2 s and 1.5 s, to reach the 80–95 s target; the measured plan at 2.0/2.2 was 68 s.)
+
+Where a beat swaps its caption after the action (beats 3, 5, 7), the second caption gets the same 200 ms fade-in and its own 3.0 s settle before the 300 ms fade-out.
+
+"Settled" means: navigation complete, fonts loaded, and no animation running anywhere on the page for 250 ms, plus the beat's own condition (for example, the red chip text present, the View receipt button visible, the red banner present).
+
+Target total runtime: 80–95 s. `pnpm capture:demo --plan` prints the measured estimate before rendering.
+
+## Cards
+
+- Opening card, 2 s: mark + "Onbehalf" wordmark (Geist 48px/700), tagline "Agents act on behalf. We prove who." beneath in `#5B564F` 22px.
+- Closing card, 3 s: same, tagline `#14161A` 28px.
+- Warm-white `#F4F1EC` background. 300 ms cross-fades to and from the pages.
+
+## Caption style
+
+One floating card. Warm-white `#F4F1EC` at 92% opacity, 1 px `#DDD7CD` border, 10 px radius, near-black `#14161A` Geist 20px/500, max 10 words, max width 420 px, padding 14 px 18 px.
+
+Placement: the largest empty region nearest the beat's anchor element, never covering the anchor, any control about to be clicked, the nav, or the footer. On the detail page prefer the empty space left of the footer buttons, or the top-right under the status chip. Captions and cards are injected during capture only; the shipped demo pages stay unchanged.
+
+## Cursor
+
+Visible injected arrow, 400–600 ms eased moves, 150 ms press indication on click, typing at ~80 ms per character.
 
 ## Beats
 
-| # | On screen | Action Claude Code performs | Caption (bottom bar) | Say | Words | Hold |
-|---|---|---|---|---|---|---|
-| A | **Opening card**: warm-white frame, Onbehalf mark and wordmark centered, tagline beneath in muted text | Static card, 200 ms fade in. | *(none; the card is the caption)* | *(silence)* | 0 | 3 s |
-| 0 | Approvals queue, freshly loaded | 300 ms cross-fade from the card. Cursor idle. | One mandate. A human when it matters. Execute once. Sign a receipt. | This is Onbehalf. In my video I said we put one mandate on every rail an agent uses, pause for a human when it matters, execute once, and sign a receipt. This is what that looks like. | 36 | 17 s |
-| 1 | Approvals queue | Cursor moves to the pending row; no click yet. | $750 refund requested. Over the $500 limit, so a person decides. | One action is waiting. A support agent asked to refund seven hundred fifty dollars. Under five hundred, the agent could do it alone. This one needs a person. | 27 | 13 s |
-| 2 | Action detail, after Review | Click **Review**. Let the page transition finish. Cursor drifts to the Approval binding card. | The approval is bound to a fingerprint of the exact facts. | This is what the finance lead sees. What the agent asked for. What it's allowed to do. What the rule decided. And this fingerprint: the exact amount, target, mandate, and policy she is about to approve. | 36 | 17 s |
-| 3 | Action detail, amount edited to 950, red state | Click the amount field, type `950.00`, click away. Let the scramble and the red chip land. Cursor rests near the binding digest. | Change the amount, and the approval is invalidated. | Change the amount, and watch the fingerprint. Every character changes, and the approval dies. You cannot approve seven fifty and have the agent refund nine fifty. | 27 | 13 s |
-| 4 | Action detail, amount restored, amber state | Click the amount field, type `750.00`, click away. Let the hash settle. | Restore it. Same facts, same fingerprint. | Put it back. Same facts, same fingerprint. | 8 | 5 s |
-| 5 | Action detail, approve sequence through "Anchor pending" | Click **Approve exact action**. Let the whole choreography play. Hold after it finishes. | Approved once. Executed once. Receipt signed. Anchor shown honestly as pending. | She approves that exact action. One refund executes. Stripe confirms it. The receipt is signed. The anchor is a separate state, and we show it as pending instead of faking a green line. | 33 | 16 s (clock starts when the sequence starts) |
-| 6 | Receipt page, verifier all PASS | Click **View receipt**. Let the transition finish. Cursor drifts down the four PASS lines. | A verifier running in your browser. Four checks pass. | Here is the receipt. The left side is what an auditor keeps. The right side is a verifier running in your browser, not a screenshot. Structure, fingerprint, signature, issuer. All pass. | 32 | 15 s |
-| 7 | Receipt page, tampered, two FAILs | Click **Show tampered copy**. Let the top-to-bottom re-evaluation and red banner land. Cursor rests on the banner. | One number changed after signing. Two checks fail and say which. | Now the same receipt with one number changed after signing. Two checks fail, and they tell you which. That is what an insurer gets from us that a log cannot give them. | 32 | 15 s |
-| 8 | Receipt page, scrolled to "Run it yourself" | Smooth-scroll (600 ms) so the terminal card is fully visible. | Same result from the command line. No trust in our dashboard required. | And the same answer from the command line. Nothing here depends on trusting our dashboard. | 15 | 8 s |
-| 9 | **Closing card**: same as the opening card, tagline larger | Cursor leaves the frame; 300 ms cross-fade to the card. | *(none; the card is the caption)* | Onbehalf. Agents act on behalf. We prove who. | 8 | 4 s |
+| # | Page | Anchor | Caption | Action | Then |
+|---|---|---|---|---|---|
+| A | Opening card | — | — | 2 s | 300 ms cross-fade to the queue |
+| 1 | Queue | pending row | One action waiting. $750 needs a person. | click **Review** | |
+| 2 | Detail | Approval binding card | The approval is bound to these exact facts. | move cursor to the amount field | |
+| 3 | Detail | amount field | Change the amount… | type `950.00`, click away, let the scramble and red chip land | swap caption to "…and the approval is invalidated." (anchor: red status chip) for the settle time |
+| 4 | Detail | amount field | Restore it. Same fingerprint. | type `750.00`, click away, settle | |
+| 5 | Detail | Approve button | Approve the exact action. | click, let the full sequence play | swap caption to "Executed once. Receipt signed. Anchor honestly pending." (anchor: status strip) for the settle time |
+| 6 | Receipt | verifier card | Your browser re-checks the receipt. Four checks pass. | slow cursor drift down the PASS lines, no click | |
+| 7 | Receipt | tamper switch | Same receipt, one number changed after signing. | flip it, let the re-evaluation and red banner land | swap caption to "Two checks fail, and say which." (anchor: red banner) |
+| 8 | Receipt | "Run it yourself" card | Same answer from the command line. | smooth-scroll (600 ms) to it, settle | |
+| 9 | Closing card | — | — | 3 s | end |
 
-**Estimated runtime:** ~2:05 spoken + 7 s of cards + ~15 s of transitions and animations ≈ **2:25–2:30**.
+## Output
 
-If the $300 completed row is in the queue, append to beat 1's "Say": *"The three-hundred-dollar refund below it went through on its own."* (11 words → hold becomes 18 s) and change its caption to: *$750 needs a person. $300 went through on its own.*
+- 1920×1080. `demo/captures/onbehalf-demo.mp4` (H.264, yuv420p via ffmpeg from the Playwright webm; Playwright records at 25 fps).
+- `demo/captures/onbehalf-demo-timestamps.txt`: one line per beat and caption swap, `mm:ss beat caption`.
+- `demo/captures/frames/beat-<n>.png`: one frame per beat at its settle point.
 
-## Caption bar spec
+## Render gate (automated, runs after every render, fails the render on any miss)
 
-- One fixed bar, bottom of frame, full content width (1120 px, centered), 56 px tall, 16 px above the footer so it never covers footer text or any clicked control.
-- Warm-white surface `#F4F1EC` at 96% opacity, 1 px `#DDD7CD` border, 10 px radius, near-black `#14161A` text, Geist 22px / 500, centered.
-- Appears at the start of each beat with a 200 ms fade; cross-fades to the next caption at the beat boundary. Never changes mid-animation.
-- Minimum on-screen time for any caption is the beat's hold; the shortest is 5 s. A 12-word caption reads in ~3 s.
-- Injected only during capture. The shipped demo pages never contain the bar.
+For every beat, one frame is pulled from the mp4 at the beat's settle point with ffmpeg and checked:
 
-## Cursor spec
+- a page beat's frame must contain its caption (pixel check of the caption region: card-colored background with dark text pixels);
+- the caption text at settle time must equal the table above;
+- the caption box must not overlap its anchor, any clicked control, the nav, or the footer (DOM boxes recorded at settle time);
+- a card beat's frame must show the card (warm-white frame with the wordmark in the center).
 
-- Injected visible cursor (standard arrow, 24 px, subtle drop shadow). Moves on 400–600 ms eased paths, never teleports.
-- Click shows a 150 ms press indication (cursor scales to 90% and back). Typing into the amount field happens at ~80 ms per character so the viewer sees it.
+The per-beat check table is printed. Any miss exits non-zero and the video is not delivered.
 
-## Opening and closing cards
+## Process
 
-- Same palette and type as the product. Mark + "Onbehalf" wordmark (Geist 48px / 700) centered; tagline "Agents act on behalf. We prove who." beneath in `#5B564F` 22px on the opening card, `#14161A` 28px on the closing card.
-- No motion on the cards beyond the fade.
-
-## Capture rules
-
-- 1920×1080. Prefer 60 fps; if Playwright's recorder caps lower, note the fps in the report and offer `pnpm demo:autopilot` (below) as the higher-fidelity path.
-- Never cut a hold short because an animation finished early; the hold is for the voice.
-- If a "Say" line is edited, recompute its hold from the new word count. Do not hand-tune holds.
-- No audio track. Output `demo/captures/onbehalf-demo.mp4` (H.264, yuv420p) via ffmpeg from the Playwright webm.
-- Write `demo/captures/onbehalf-demo-timestamps.txt`: one line per beat, `mm:ss  beat  first four words of Say`.
-
-## Autopilot mode (best picture quality)
-
-`pnpm demo:autopilot` runs the same beats, captions, cursor, and cards in a **headed** Chromium window sized 1920×1080 on Malcolm's screen, at native frame rate, while Malcolm screen-records it with QuickTime and narrates live. Same timing file, so the read-along works identically. A 3-second countdown appears before beat A so he can start the recording.
-
-## Recording the voice (Malcolm)
-
-**Option 1, voice over the mp4:** open the mp4 full-screen; QuickTime → New Screen Recording → mic on → record the screen while it plays; read each "Say" line when its beat appears. If you finish early, wait; the hold is built for you.
-
-**Option 2, autopilot (sharper video):** start QuickTime screen recording with mic on, run `pnpm demo:autopilot`, read along as it drives.
-
-One take either way. Stumbles are fine. Stop after the closing card.
+`pnpm capture:demo --plan` performs a dry run without video and prints the schedule (beat, caption, planned placement, estimated seconds). Malcolm okays it. `pnpm capture:demo` renders, runs the gate, and prints the table.
