@@ -7,7 +7,7 @@
 | Version | 1.0 |
 | Created / last updated | 2026-09-15 |
 | Status | Active V0 security baseline; implementation has not yet been verified |
-| Classification | Private internal project context |
+| Classification | Design document, published with the demo repository |
 | Intended readers | Malcolm, Asa, Codex, future engineers, security reviewers, and approved collaborators |
 | Canonical destination | `Project-Blackbox/docs/SECURITY_PRINCIPLES.md` |
 | Depends on | `MASTER_CONTEXT.md`, `BUILD_PHILOSOPHY.md`, `PRODUCT_ARCHITECTURE.md` |

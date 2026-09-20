@@ -6,7 +6,7 @@
 | Source revision | `24c4e2410c4d` (this manifest is committed on top of it) |
 | Written | 2026-09-19T22:18Z |
 | Company name in UI and copy | Onbehalf. Repository folder keeps the Project Blackbox codename. |
-| Decisions in force | `DECISIONS.md` PBX-021 |
+| Decisions in force | PBX-021 (private decision log; its demo-relevant content is restated in this manifest and in `EXPLAINER.md`) |
 
 ## What is real
 

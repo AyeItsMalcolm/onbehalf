@@ -14,6 +14,8 @@ Preserve the distinction between authority, policy, approval, execution, provide
 
 ## 2. Required reading
 
+> In the public demo repository, documents 1, 2, 5, and 6 below are kept privately (company context, build philosophy, decision log, execution plan). `README.md` explains what is here; decisions cited by `PBX-` number are restated in `DEMO_MANIFEST.md` and `EXPLAINER.md`.
+
 Read these files in order before broad or security-sensitive work:
 
 1. `docs/MASTER_CONTEXT.md` — company, founder, goals, thesis, customer wedge, and assumptions.
