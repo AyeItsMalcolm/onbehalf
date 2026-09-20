@@ -1,4 +1,4 @@
-# Project Blackbox — Agent Instructions
+# Project Blackbox (Onbehalf) — Agent Instructions
 
 This file governs work in the Project Blackbox repository. It translates the full project documents into concise operating rules for Asa, Codex, and future engineering agents.
 
@@ -178,6 +178,8 @@ Use precise states:
 - `SUPERSEDED`: a later approved artifact or decision replaced it.
 
 ## 8. V0 scope rules
+
+> **Chain target updated 2026-09-19 (DECISIONS.md PBX-021):** BNB Chain is the target rail for the residency build. Base Sepolia references below are the original V0 plan; the demo submits no chain transaction. The 'do not build' entry for BNB Chain reflects the one-chain-only rule for V0, not a position on BNB Chain.
 
 ### Build
 
